@@ -1,0 +1,39 @@
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py robot_model:=rx150 use_joint_pub_gui:=true
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py robot_model:=vx300 use_joint_pub_gui:=false
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py robot_model:=rx150
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py robot_model:=rx150 use_sim:=true
+
+ros2 launch interbotix_xsarm_moveit xsarm_moveit.launch.py robot_model:=rx150 hardware_type:=actual
+
+ros2 launch interbotix_xsarm_moveit xsarm_moveit.launch.py robot_model:=rx150 hardware_type:=gz_classic
+
+
+
+Master Slave command -
+
+ros2 run master_slave_control mirror_nodes
+
+
+
+Master Slave (inverting) command -
+
+ros2 run master_slave_control mirror_nodes_inverted
+
+
+
+Sourcing commands :-
+
+cd interbotix_ws
+
+source /opt/ros/humble/setup.bash
+
+source ~/interbotix_ws/install/setup.bash
+
+
+
+Joint States commands :-
+
+ros2 topic echo /rx150/joint_states
+ros2 topic echo /vx300/joint_states
