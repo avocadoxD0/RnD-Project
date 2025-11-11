@@ -1,2 +1,2 @@
 # RnD-Project
-Bilateral Control of Robotic Arms
+Collaborative Control of Robotic Arms - Bilateral Control
