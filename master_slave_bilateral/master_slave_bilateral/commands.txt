@@ -1,0 +1,126 @@
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py robot_model:=rx150 use_joint_pub_gui:=true
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py robot_model:=vx300 use_joint_pub_gui:=false
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py robot_model:=rx150
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py robot_model:=rx150 use_sim:=true
+
+ros2 launch interbotix_xsarm_moveit xsarm_moveit.launch.py robot_model:=rx150 hardware_type:=actual
+
+ros2 launch interbotix_xsarm_moveit xsarm_moveit.launch.py robot_model:=rx150 hardware_type:=gz_classic
+
+
+
+Master Slave command -
+
+ros2 run master_slave_control mirror_nodes
+
+
+
+Master Slave (inverting) command -
+
+ros2 run master_slave_control mirror_nodes_inverted
+
+
+
+Sourcing commands :-
+
+cd interbotix_ws
+
+source /opt/ros/humble/setup.bash
+
+source ~/interbotix_ws/install/setup.bash
+
+
+
+Joint States commands :-
+
+ros2 topic echo /rx150/joint_states
+ros2 topic echo /vx300/joint_states
+
+Fake hardware_type :-
+
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py \robot_model:=rx150 use_joint_pub_gui:=true hardware_type:=fake
+ros2 launch interbotix_xsarm_descriptions xsarm_description.launch.py \robot_model:=vx300 use_joint_pub_gui:=false hardware_type:=fake
+
+pybullet_mirror :-
+
+cd ~/pybullet_mirror
+python3 mirror_sim_pybullet.py
+python3 inverse_mirror_sim.py
+python3 mirror_sim_pybullet_force_feedback.py
+
+python3 full_bilateral_control.py
+
+
+Full Bilateral commands -
+
+to run the vx300s
+ros2 launch interbotix_xsarm_ros_control xsarm_ros_control.launch.py   robot_model:=vx300s   robot_name:=vx300s   hardware_type:=actual   use_rviz:=true
+
+
+reactor commands -
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+    robot_model:=rx150 \
+    robot_name:=rx150 \
+    hardware_type:=actual \
+    use_rviz:=true
+
+
+ros2 topic pub /rx150/commands/joint_group interbotix_xs_msgs/msg/JointGroupCommand \
+"{name: 'arm', cmd: [0.0, -0.3, 0.2, 0.0, 0.0]}"
+
+
+viper commands -
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+    robot_model:=vx300s \
+    robot_name:=vx300s \
+    hardware_type:=actual \
+    use_rviz:=true
+
+ros2 topic pub /vx300s/commands/joint_group \
+interbotix_xs_msgs/msg/JointGroupCommand \
+"{name: 'arm', cmd: [0.0, -0.02, 0.0, 0.0, 0.0, 0.0]}"
+
+
+
+
+without the port issues -
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+    robot_model:=rx150 \
+    robot_name:=rx150 \
+    hardware_type:=actual \
+    port:=/dev/ttyDXL_reactor
+
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+    robot_model:=vx300s \
+    robot_name:=vx300s \
+    hardware_type:=actual \
+    port:=/dev/ttyDXL_viper
+
+
+
+
+
+
+updated YAML-
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+  robot_model:=rx150 robot_name:=rx150 hardware_type:=actual \
+  motor_configs:=/home/rika/interbotix_ws/config_overrides/rx150_port.yaml \
+  use_rviz:=false
+
+
+ros2 launch interbotix_xsarm_control xsarm_control.launch.py \
+  robot_model:=vx300s robot_name:=vx300s hardware_type:=actual \
+  motor_configs:=/home/rika/interbotix_ws/config_overrides/vx300s_port.yaml \
+  use_rviz:=false
+
+
+ros2 run master_slave_bilateral bilateral_control
+
+ros2 run master_slave_bilateral hybrid_bilateral_node
