@@ -42,6 +42,8 @@ class BilateralControl(Node):
             [0, 0, 0, 0, 0],  # suppressed DOF
         ])
 
+        #the above mapping is wrong
+
         self.timer = self.create_timer(0.05, self.control_loop)
 
     def master_cb(self, msg):
