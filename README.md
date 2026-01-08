@@ -45,3 +45,28 @@ The project emphasizes control-theoretic formulation, simulation-based validatio
 - Physics-based simulation of robotic arms in PyBullet  
 - Real-time state visualization in RViz  
 - Evaluation of system response, force tracking, and stability
+
+---
+
+## Key Learnings
+- Practical implementation of bilateral control in robotic systems  
+- Integration of control theory with modern robotics frameworks  
+- Stability and transparency trade-offs in teleoperation systems  
+
+---
+
+## Future Work
+- Hardware implementation with real robotic manipulators  
+- Latency-aware and delay-compensated bilateral control  
+- Advanced control schemes (passivity-based / adaptive control)  
+
+---
+
+## Author
+**Farhaan**  
+Robotics & Control Systems Enthusiast  
+
+---
+
+## License
+This project is intended for academic and research purposes.
