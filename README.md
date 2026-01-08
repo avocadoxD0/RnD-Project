@@ -1,33 +1,74 @@
-# Bilateral Control of Robotic Arms
+# Arm-to-Arm Bilateral Control of Robotic Manipulators
 
 ## Overview
-This R&D project focuses on the design and implementation of a **bilateral control framework** for robotic manipulators, enabling stable **force–position feedback** for teleoperation tasks. The system allows an operator (master arm) to interact with a remote environment through a slave arm while receiving realistic force feedback, ensuring transparency and stability.
+This R&D project presents the design, implementation, and validation of a **joint-space bilateral control framework** for robotic manipulators. The system enables real-time **motion synchronization and force reflection** between a master and a slave robotic arm, allowing one robot to perceive interaction forces experienced by the other.
 
-The project emphasizes control-theoretic formulation, simulation-based validation, and modern robotics middleware integration.
+The project uses the **Interbotix Reactor X150** as the master manipulator and the **Interbotix Viper X300** as the slave. The bilateral control loop was first validated in simulation using **ROS2, RViz, and PyBullet**, followed by partial deployment on physical hardware to study real-world limitations.
 
 ---
 
 ## Objectives
-- Implement bilateral control for robotic arm teleoperation  
-- Achieve stable force and position feedback between master and slave  
-- Analyze transparency and stability under varying interaction forces  
-- Validate control performance in a physics-based simulation environment  
+- Implement arm-to-arm bilateral control using joint-space mapping  
+- Enable force reflection from the slave to the master during environmental interaction  
+- Study transparency and stability characteristics of bilateral control  
+- Compare simulation performance with real hardware behavior  
 
 ---
 
 ## System Architecture
-- **Master–Slave Manipulator Model**
-- Bilateral feedback loop for position and force exchange
-- Controller layer implementing PID / impedance-based control
-- Simulation and visualization layer using ROS2 tools
+The bilateral control system consists of two coupled information flows:
+
+- **Forward Path (Master → Slave):**  
+  Master joint angles are mapped to the slave using a predefined joint-space mapping matrix.
+
+- **Feedback Path (Slave → Master):**  
+  Reaction torques generated due to environment interaction are reflected back to the master.
+
+A compliant **admittance control model** is implemented on the master side to convert reflected torques into smooth positional offsets when direct torque control is unavailable.
 
 ---
 
-## Control Strategy
-- Dynamic modeling of robotic manipulators
-- Position–force bilateral control scheme
-- PID and impedance-based controllers for stability and transparency
-- Performance evaluation using response analysis and disturbance rejection
+## Mathematical Framework
+The control formulation follows standard rigid-body joint-space dynamics:
+
+- Joint-space mapping between manipulators with mismatched DOF  
+- Torque computation using Jacobian-transformed interaction forces  
+- Gain-scaled force reflection to the master  
+- Admittance-based compliance for stable force feedback  
+
+Stability is addressed using passivity-based considerations, gain tuning, torque filtering, and dead-zone handling to prevent oscillations.
+
+---
+
+## Simulation & Validation
+- Initial master–slave mapping verified in **RViz** using Interbotix URDF models  
+- Full bilateral control loop implemented and tested in **PyBullet**  
+- Simulation demonstrated:
+  - Stable joint synchronization  
+  - Correct force-feedback activation during contact  
+  - Robust response under obstacle interaction  
+
+Simulation results confirmed the effectiveness of joint-space bilateral control under idealized conditions.
+
+---
+
+## Hardware Deployment
+The bilateral control framework was deployed on the physical **X150–X300** robotic arm pair. While partial bilateral motion was achieved, sustained synchronized operation was limited by:
+
+- Control-loop timing inconsistencies  
+- Python execution and communication latency  
+- Actuator thermal and hardware constraints  
+- Noise and uncertainty in torque estimation  
+
+These observations highlight the gap between simulation and real-world implementation.
+
+---
+
+## Key Observations
+- Joint-space bilateral control performs reliably in simulation  
+- Force reflection behaves predictably during environment contact  
+- Hardware deployment exposes challenges related to timing, actuation, and sensing  
+- Real-world constraints significantly affect bilateral control stability  
 
 ---
 
@@ -35,36 +76,25 @@ The project emphasizes control-theoretic formulation, simulation-based validatio
 - **Middleware:** ROS2  
 - **Simulation:** PyBullet  
 - **Visualization:** RViz  
+- **Robotic Arms:** Interbotix Reactor X150, Interbotix Viper X300  
+- **Actuators:** Dynamixel servo motors  
 - **Programming Language:** Python  
-- **Control:** PID / Impedance Control  
-- **Robotics Concepts:** Teleoperation, Force Feedback, Bilateral Control  
-
----
-
-## Simulation & Validation
-- Physics-based simulation of robotic arms in PyBullet  
-- Real-time state visualization in RViz  
-- Evaluation of system response, force tracking, and stability
-
----
-
-## Key Learnings
-- Practical implementation of bilateral control in robotic systems  
-- Integration of control theory with modern robotics frameworks  
-- Stability and transparency trade-offs in teleoperation systems  
+- **Control Techniques:** Bilateral control, admittance control, joint-space mapping  
 
 ---
 
 ## Future Work
-- Hardware implementation with real robotic manipulators  
-- Latency-aware and delay-compensated bilateral control  
-- Advanced control schemes (passivity-based / adaptive control)  
+- Integration of full **IK/FK** for Cartesian-space bilateral control  
+- Latency-aware and high-frequency control loops  
+- Improved force sensing and torque estimation  
+- Enhanced hardware reliability and thermal management  
+- Extension to real-world teleoperation tasks  
 
 ---
 
 ## Author
-**Farhaan**  
-Robotics & Control Systems Enthusiast  
+**Farhaan Nasir**  
+R&D Project – Robotics & Control Systems  
 
 ---
 
