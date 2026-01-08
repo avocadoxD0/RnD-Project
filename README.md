@@ -44,8 +44,4 @@ The project emphasizes control-theoretic formulation, simulation-based validatio
 ## Simulation & Validation
 - Physics-based simulation of robotic arms in PyBullet  
 - Real-time state visualization in RViz  
-- Evaluation of system response, force tracking, and stability  
-
----
-
-## Repository Structure
+- Evaluation of system response, force tracking, and stability
